@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>2025腾讯面试一面总结</title>
+      <link href="/2025/03/14/2025%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E4%B8%80%E9%9D%A2%E6%80%BB%E7%BB%93/"/>
+      <url>/2025/03/14/2025%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E4%B8%80%E9%9D%A2%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<p>面试岗位：做安全正向防护sdk的，web和移动端都有</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314111104988.png" alt="Snipaste_2025-03-14_10-46-52"></p><p>大概面了40分钟，写代码写了20分钟</p><h2 id="1、自我介绍"><a href="#1、自我介绍" class="headerlink" title="1、自我介绍"></a>1、自我介绍</h2><p>巴拉巴拉告诉自己擅长什么，打算干啥</p><h2 id="2、介绍自己的项目经历（根据项目经历来问）"><a href="#2、介绍自己的项目经历（根据项目经历来问）" class="headerlink" title="2、介绍自己的项目经历（根据项目经历来问）"></a>2、介绍自己的项目经历（根据项目经历来问）</h2><p>Android 渗透印象最深刻的漏洞？</p><p>360免费版和360企业版主要的区别？</p><p>Frida检测如何绕过？</p><p>如果你是正向人员，如何隐藏Frida检测？</p><p>Android ROM魔改的思路？</p><p>APP脱壳思路？</p><p>SVC 检测绕过的方式？</p><p>小程序调试的思路？</p><p>web防护知道吗？我回答没了解太多（可以委婉一点，说自己学习能力强）</p><p>目前在学校学习那些课程？我说课程全是水课，我自己在学pwn、Android和web</p><h2 id="3、八股文"><a href="#3、八股文" class="headerlink" title="3、八股文"></a>3、八股文</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定一个整数数组和一个目标值，找到数组中和为目标值的两个数，并返回他们的数组下标</span><br></pre></td></tr></table></figure><p>问擅长什么语言，我说c、python、java</p><p>那好用c语言来写</p><p>刚开始不太会，后来在面试官眼皮下面开始调试代码。。。最后也是磨磨唧唧写完了</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.<span class="property">h</span>&gt;</span><br><span class="line">int <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    int nums[<span class="number">4</span>] = &#123; <span class="number">2</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">15</span> &#125;;</span><br><span class="line">    int target = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* code */</span></span><br><span class="line">        int tmp = nums[i];</span><br><span class="line">        <span class="keyword">for</span> (int j = i; j &lt; <span class="number">4</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp + nums[j] == target) &#123;</span><br><span class="line">                <span class="title function_">printf</span>(<span class="string">&quot;%d&quot;</span>, i + j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h2><p>wait等待，如果没有二面总结，估计就凉了。个人感觉Android回答的还行哈哈哈</p><p>算法写的就是一坨，web防护不会估计有降分（检测环境那些）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>www.zip文件泄露题目实战</title>
       <link href="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/"/>
       <url>/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/</url>
