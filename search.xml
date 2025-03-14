@@ -27,7 +27,7 @@
       <link href="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/"/>
       <url>/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/</url>
       
-        <content type="html"><![CDATA[<p>给了这样的</p><p><img src="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/image-20250312195852-issjh8k.png" alt="image"></p><p>登录和密码，源码泄露</p><p><img src="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/image-20250312195900-u36vcw9.png" alt="image"></p><p><img src="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/image-20250312195907-xm5sjfk.png" alt="image"></p><p>看到有个info.php，访问他，flag在环境变量里</p><p><img src="/2025/03/12/www-zip%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E9%A2%98%E7%9B%AE%E5%AE%9E%E6%88%98/image-20250312195911-chzzn6f.png" alt="image"></p>]]></content>
+        <content type="html"><![CDATA[<p>给了这样的</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113600553.png" alt="image-20250314113600471"></p><p>登录和密码，源码泄露</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113622381.png" alt="image-20250314113622338"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113633453.png" alt="image-20250314113633380"></p><p>看到有个info.php，访问他，flag在环境变量里</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113646833.png" alt="image-20250314113646777"></p>]]></content>
       
       
       
