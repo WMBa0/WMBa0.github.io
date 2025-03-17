@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【面试】TCP通信原理</title>
+      <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91TCP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
+      <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91TCP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205345077.png" alt="image-20250317205345021"></p><p>TCP：TCP 是一种面向连接的协议，它提供可靠的、有序的、基于字节流的通信服务。TCP 通过三次握手建立连接，通过四次挥手关闭连接。（传输层，提供端到端的通信服务。）</p><h2 id="TCP三次握手校验"><a href="#TCP三次握手校验" class="headerlink" title="TCP三次握手校验"></a>TCP三次握手校验</h2><p>TCP 的<a href="https://zhida.zhihu.com/search?content_id=10518772&content_type=Article&match_order=1&q=%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&zhida_source=entity">三次握手</a>，意思就是建立连接的时候客户端与服务器之间需要三次数据包的交流。</p><p>ACK：确认序号标志，为1时表示确认号有效，为0表示报文中不含确认信息，忽略确认号字段。</p><p>SYN：同步序号，用于建立连接过程</p><ol><li>客户端发送给服务器一个请求连接数据包，即发送了一个指向服务器目标端口的一个 SYN 位为 1 的TCP 报文。</li><li>服务器接收到客户端的连接请求之后，会回应一个 SYN 位为 1 的TCP 报文，表示同意连接。并且，会把 ACK 位也置 1 表示确认收到上次消息。</li><li>客户端接收到服务器的同意连接的数据包之后，还要回复一个 ACK 为 1 的 TCP 报文，表示确认收到。</li></ol><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205351274.png" alt="image-20250317205351223"></p><h2 id="TCP四次挥手断开连接"><a href="#TCP四次挥手断开连接" class="headerlink" title="TCP四次挥手断开连接"></a>TCP四次挥手断开连接</h2><p>TCP 的<a href="https://zhida.zhihu.com/search?content_id=10518772&content_type=Article&match_order=1&q=%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B&zhida_source=entity">四次挥手</a>，意思就是释放连接的时候客户端与服务器之间需要四次数据包的交流。</p><ol><li>客户端发送给服务器一个请求释放连接的数据包，即发送了一个指向服务器目标端口的一个 FIN 位为 1 的TCP 报文，表示客户端没有数据要发送了，但是仍然可以接收数据；并且 ACK 位也为 1，表示对上次传输数据结果的确认。并且之后处去等待状态，等待服务器的两次回应。</li><li>服务器接收到客户端的释放连接请求之后，会先回应一个 ACK 位为 1 的报文，表示确认收到。但是，这时服务器可能还有数据没有发送完成，继续发送数据。</li><li>服务器发送完数据之后，发送一个 FIN 为 1 的 TCP 报文，表示我也没有要发送的数据了，你可以释放连接了。当然 ACK 位仍然为 1 。</li><li>客户端接收到服务器的同意释放连接的数据包之后，回复一个 ACK 为 1 的 TCP 报文，表示确认收到。</li></ol><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205357557.png" alt="image-20250317205357506"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 基础 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>AWD-Pwn脚本汇总</title>
       <link href="/2025/03/15/AWD-Pwn%E8%84%9A%E6%9C%AC%E6%B1%87%E6%80%BB/"/>
       <url>/2025/03/15/AWD-Pwn%E8%84%9A%E6%9C%AC%E6%B1%87%E6%80%BB/</url>
