@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【面试】HTTPS通信原理</title>
+      <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91HTTPS%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
+      <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91HTTPS%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<p>HTTPS（HyperText Transfer Protocol Secure）是HTTP协议的安全版本，它通过结合使用TLS（Transport Layer Security）协议来加密HTTP通信。</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205654524.png" alt="image-20250317205654419"></p><h2 id="用户和网站通信的过程"><a href="#用户和网站通信的过程" class="headerlink" title="用户和网站通信的过程"></a>用户和网站通信的过程</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205700130.png" alt="image-20250317205700022"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205705364.png" alt="image-20250317205705219"></p><h2 id="TLS四次握手"><a href="#TLS四次握手" class="headerlink" title="TLS四次握手"></a>TLS四次握手</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205711644.png" alt="image-20250317205711504"></p><p>结合（SSH认证原理）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 基础 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【面试】UDP通信原理</title>
       <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91UDP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
       <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91UDP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>
