@@ -6,19 +6,32 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>【面试】UDP通信原理 | WMBa0</title>
+  <title>【面试】SSH认证原理 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
   
-  <meta name="description" content="UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。
+  <meta name="description" content="对称加密（也称为秘钥加密）
 
-UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。
-UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。
-UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。"> 
+加密解密使用同一套秘钥
+
+非对称加密（也称公钥加密）
+
+加密用公钥，解密用私钥
+两个密钥的特性：公钥加密后的密文，只能通过对应的私钥进行解密。而通过公钥推理出私钥的可能性微乎其微。
+非对称加密方案的登录流程
+
+远程Server收到Client端用户TopGun的登录请求，Server把自己的公钥发给用户。
+Client使用这个公钥，将密码进行加密。
+Client将加密的密码发送给Server端。
+远程Server用自己的私钥，解密登录密码，然后验证其合法性。
+若验证结果，给Client相应的响应。
+
+私钥是Server端独有，这就保证了Client的登录信息即使在网络传输过程中被窃据，也没有私钥进行解密，保证了数据的安全性，这充分利用了非对称加密的特性。
+存在中间人攻击"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="【面试】UDP通信原理"/>
+  <meta property="og:title" content="【面试】SSH认证原理"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -118,7 +131,7 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 
 	
 		<div class="page-header">
-			<h1> 【面试】UDP通信原理</h1>
+			<h1> 【面试】SSH认证原理</h1>
 		</div>
 	
 
@@ -135,12 +148,41 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 	<div class="mypage">		
 	  		
 
-	  <p>UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205548870.png" alt="image-20250317205548833"></p>
-<p>UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。</p>
-<p>UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。</p>
-<p>UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205553227.png" alt="image-20250317205553148"></p>
+	  <ol>
+<li>对称加密（也称为秘钥加密）</li>
+</ol>
+<p>加密解密使用同一套秘钥</p>
+<ol>
+<li>非对称加密（也称公钥加密）</li>
+</ol>
+<p>加密用公钥，解密用私钥</p>
+<p>两个密钥的特性：公钥加密后的密文，只能通过对应的私钥进行解密。而通过公钥推理出私钥的可能性微乎其微。</p>
+<h2 id="非对称加密方案的登录流程"><a href="#非对称加密方案的登录流程" class="headerlink" title="非对称加密方案的登录流程"></a>非对称加密方案的登录流程</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205902272.png" alt="image-20250317205902210"></p>
+<ol>
+<li>远程Server收到Client端用户TopGun的登录请求，Server把自己的公钥发给用户。</li>
+<li>Client使用这个公钥，将密码进行加密。</li>
+<li>Client将加密的密码发送给Server端。</li>
+<li>远程Server用自己的私钥，解密登录密码，然后验证其合法性。</li>
+<li>若验证结果，给Client相应的响应。</li>
+</ol>
+<p>私钥是Server端独有，这就保证了Client的登录信息即使在网络传输过程中被窃据，也没有私钥进行解密，保证了数据的安全性，这充分利用了非对称加密的特性。</p>
+<h2 id="存在中间人攻击"><a href="#存在中间人攻击" class="headerlink" title="存在中间人攻击"></a>存在中间人攻击</h2><p>上述过程存在一个大问题</p>
+<p>Client端如何保证接受到的公钥就是目标Server端的？，如果一个攻击者中途拦截Client的登录请求，向其发送自己的公钥，Client端用攻击者的公钥进行数据加密。攻击者接收到加密信息后再用自己的私钥进行解密，不就窃取了Client的登录信息了吗？这就是所谓的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">中间人攻击</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205907384.png" alt="image-20250317205907321"></p>
+<h2 id="SSH解决问题"><a href="#SSH解决问题" class="headerlink" title="SSH解决问题"></a>SSH解决问题</h2><p>问题就在于如何对Server的公钥进行认证</p>
+<p>HTTPS通过CA证书对公钥进行验证</p>
+<p>SSH通过Client端自己对公钥进行确认</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205918463.png" alt="image-20250317205918396"></p>
+<h2 id="基于公钥认证免密登录"><a href="#基于公钥认证免密登录" class="headerlink" title="基于公钥认证免密登录"></a>基于公钥认证免密登录</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205925536.png" alt="image-20250317205925401"></p>
+<ol>
+<li>Client将自己的公钥存放在Server上，追加在文件authorized_keys中。</li>
+<li>Server端接收到Client的连接请求后，会在authorized_keys中匹配到Client的公钥pubKey，并生成随机数R，用Client的公钥对该随机数进行加密得到pubKey(R)<br> ，然后将加密后信息发送给Client。</li>
+<li>Client端通过私钥进行解密得到随机数R，然后对随机数R和本次会话的SessionKey利用MD5生成摘要Digest1，发送给Server端。</li>
+<li>Server端会也会对R和SessionKey利用同样摘要算法生成Digest2。</li>
+<li>Server端会最后比较Digest1和Digest2是否相同，完成认证过程。</li>
+</ol>
+<p>（Client将自己的公钥存放在Server上。需要用户手动将公钥copy到server上。这就是在配置ssh的时候进程进行的操作。）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205931196.png" alt="image-20250317205931079"></p>
 
 	  <div class="article-footer-copyright">
 
@@ -158,13 +200,12 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 
     
     
-    <a href="/2025/03/17/【面试】HTTPS通信原理/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2025/03/17/【面试】TCP通信原理/" type="button" class="btn btn-default ">Next<i
+    <a href="/2025/03/17/【面试】进程、线程、协程/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 

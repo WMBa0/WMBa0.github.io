@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>【面试】SSH认证原理</title>
+      <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91SSH%E8%AE%A4%E8%AF%81%E5%8E%9F%E7%90%86/"/>
+      <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91SSH%E8%AE%A4%E8%AF%81%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<ol><li>对称加密（也称为秘钥加密）</li></ol><p>加密解密使用同一套秘钥</p><ol><li>非对称加密（也称公钥加密）</li></ol><p>加密用公钥，解密用私钥</p><p>两个密钥的特性：公钥加密后的密文，只能通过对应的私钥进行解密。而通过公钥推理出私钥的可能性微乎其微。</p><h2 id="非对称加密方案的登录流程"><a href="#非对称加密方案的登录流程" class="headerlink" title="非对称加密方案的登录流程"></a>非对称加密方案的登录流程</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205902272.png" alt="image-20250317205902210"></p><ol><li>远程Server收到Client端用户TopGun的登录请求，Server把自己的公钥发给用户。</li><li>Client使用这个公钥，将密码进行加密。</li><li>Client将加密的密码发送给Server端。</li><li>远程Server用自己的私钥，解密登录密码，然后验证其合法性。</li><li>若验证结果，给Client相应的响应。</li></ol><p>私钥是Server端独有，这就保证了Client的登录信息即使在网络传输过程中被窃据，也没有私钥进行解密，保证了数据的安全性，这充分利用了非对称加密的特性。</p><h2 id="存在中间人攻击"><a href="#存在中间人攻击" class="headerlink" title="存在中间人攻击"></a>存在中间人攻击</h2><p>上述过程存在一个大问题</p><p>Client端如何保证接受到的公钥就是目标Server端的？，如果一个攻击者中途拦截Client的登录请求，向其发送自己的公钥，Client端用攻击者的公钥进行数据加密。攻击者接收到加密信息后再用自己的私钥进行解密，不就窃取了Client的登录信息了吗？这就是所谓的<a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">中间人攻击</a></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205907384.png" alt="image-20250317205907321"></p><h2 id="SSH解决问题"><a href="#SSH解决问题" class="headerlink" title="SSH解决问题"></a>SSH解决问题</h2><p>问题就在于如何对Server的公钥进行认证</p><p>HTTPS通过CA证书对公钥进行验证</p><p>SSH通过Client端自己对公钥进行确认</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205918463.png" alt="image-20250317205918396"></p><h2 id="基于公钥认证免密登录"><a href="#基于公钥认证免密登录" class="headerlink" title="基于公钥认证免密登录"></a>基于公钥认证免密登录</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205925536.png" alt="image-20250317205925401"></p><ol><li>Client将自己的公钥存放在Server上，追加在文件authorized_keys中。</li><li>Server端接收到Client的连接请求后，会在authorized_keys中匹配到Client的公钥pubKey，并生成随机数R，用Client的公钥对该随机数进行加密得到pubKey(R)<br> ，然后将加密后信息发送给Client。</li><li>Client端通过私钥进行解密得到随机数R，然后对随机数R和本次会话的SessionKey利用MD5生成摘要Digest1，发送给Server端。</li><li>Server端会也会对R和SessionKey利用同样摘要算法生成Digest2。</li><li>Server端会最后比较Digest1和Digest2是否相同，完成认证过程。</li></ol><p>（Client将自己的公钥存放在Server上。需要用户手动将公钥copy到server上。这就是在配置ssh的时候进程进行的操作。）</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205931196.png" alt="image-20250317205931079"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 基础 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【面试】进程、线程、协程</title>
+      <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B/"/>
+      <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<p>（面试必问）</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205818437.png" alt="image-20250317205818349"></p><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>进程是资源分配的基本单位，每个进程都有自己独立的一块内存空间，一个进程可以有多个线程。Windows操作系统描述进程的时候在系统地址空间用PEB结构体进行描述。逆向过程中可以通过修改PEB结构体的值来绕过调试器检测。</p><h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>CPU调度的基本单位，一个进程至少有一个线程，一个进程可以运行多个线程，多个线程可共享进程的数据。每个线程有自己的程序计数器、虚拟机栈和本地方法栈。</p><p>线程是进程中最小的执行单位，同时也是计算机最小的调度单元。</p><h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程是一种特殊的函数，允许在执行过程中暂停和恢复，从而实现异步编程。与普通函数运行到结束为止不同，协程可以在执行过程中将控制权交还给调用方，使其他任务能够<a href="https://zhida.zhihu.com/search?content_id=710368169&content_type=Answer&match_order=1&q=%E5%B9%B6%E5%8F%91&zhida_source=entity">并发</a>运行。协程特别适合处理一些耗时操作（例如从网络获取数据或读取文件），这些操作通常会阻塞主线程。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 基础 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【面试】HTTPS通信原理</title>
       <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91HTTPS%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
       <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91HTTPS%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>

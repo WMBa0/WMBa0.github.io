@@ -6,19 +6,20 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>【面试】UDP通信原理 | WMBa0</title>
+  <title>【面试】进程、线程、协程 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
   
-  <meta name="description" content="UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。
+  <meta name="description" content="（面试必问）
 
-UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。
-UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。
-UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。"> 
+进程进程是资源分配的基本单位，每个进程都有自己独立的一块内存空间，一个进程可以有多个线程。Windows操作系统描述进程的时候在系统地址空间用PEB结构体进行描述。逆向过程中可以通过修改PEB结构体的值来绕过调试器检测。
+线程CPU调度的基本单位，一个进程至少有一个线程，一个进程可以运行多个线程，多个线程可共享进程的数据。每个线程有自己的程序计数器、虚拟机栈和本地方法栈。
+线程是进程中最小的执行单位，同时也是计算机最小的调度单元。
+协程协程是一种特殊的函数，允许在执行过程中暂停和恢复，从而实现异步编程。与普通函数运行到结束为止不同，协程可以在执行过程中将控制权交还给调用方，使其他任务能够并发运行。协程特别适合处理一些耗时操作（例如从网络获取数据或读取文件），这些操作通常会阻塞主线程。"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="【面试】UDP通信原理"/>
+  <meta property="og:title" content="【面试】进程、线程、协程"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -118,7 +119,7 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 
 	
 		<div class="page-header">
-			<h1> 【面试】UDP通信原理</h1>
+			<h1> 【面试】进程、线程、协程</h1>
 		</div>
 	
 
@@ -135,12 +136,12 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 	<div class="mypage">		
 	  		
 
-	  <p>UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205548870.png" alt="image-20250317205548833"></p>
-<p>UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。</p>
-<p>UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。</p>
-<p>UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205553227.png" alt="image-20250317205553148"></p>
+	  <p>（面试必问）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205818437.png" alt="image-20250317205818349"></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>进程是资源分配的基本单位，每个进程都有自己独立的一块内存空间，一个进程可以有多个线程。Windows操作系统描述进程的时候在系统地址空间用PEB结构体进行描述。逆向过程中可以通过修改PEB结构体的值来绕过调试器检测。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>CPU调度的基本单位，一个进程至少有一个线程，一个进程可以运行多个线程，多个线程可共享进程的数据。每个线程有自己的程序计数器、虚拟机栈和本地方法栈。</p>
+<p>线程是进程中最小的执行单位，同时也是计算机最小的调度单元。</p>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程是一种特殊的函数，允许在执行过程中暂停和恢复，从而实现异步编程。与普通函数运行到结束为止不同，协程可以在执行过程中将控制权交还给调用方，使其他任务能够<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=710368169&content_type=Answer&match_order=1&q=%E5%B9%B6%E5%8F%91&zhida_source=entity">并发</a>运行。协程特别适合处理一些耗时操作（例如从网络获取数据或读取文件），这些操作通常会阻塞主线程。</p>
 
 	  <div class="article-footer-copyright">
 
@@ -158,13 +159,13 @@ UDP 客户端在发送数据时并不判断主机是否可达，服务器是否�
 
     
     
-    <a href="/2025/03/17/【面试】HTTPS通信原理/" type="button" class="btn btn-default"><i
+    <a href="/2025/03/17/【面试】SSH认证原理/" type="button" class="btn btn-default"><i
                 class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2025/03/17/【面试】TCP通信原理/" type="button" class="btn btn-default ">Next<i
+    <a href="/2025/03/17/【面试】HTTPS通信原理/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
