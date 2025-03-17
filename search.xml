@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【面试】UDP通信原理</title>
+      <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91UDP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
+      <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91UDP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<p>UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205548870.png" alt="image-20250317205548833"></p><p>UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。</p><p>UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。</p><p>UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。</p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205553227.png" alt="image-20250317205553148"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 基础 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【面试】TCP通信原理</title>
       <link href="/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91TCP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/"/>
       <url>/2025/03/17/%E3%80%90%E9%9D%A2%E8%AF%95%E3%80%91TCP%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86/</url>

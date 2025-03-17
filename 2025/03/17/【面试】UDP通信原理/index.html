@@ -6,25 +6,19 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>【面试】TCP通信原理 | WMBa0</title>
+  <title>【面试】UDP通信原理 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
   
-  <meta name="description" content="TCP：TCP 是一种面向连接的协议，它提供可靠的、有序的、基于字节流的通信服务。TCP 通过三次握手建立连接，通过四次挥手关闭连接。（传输层，提供端到端的通信服务。）
-TCP三次握手校验TCP 的三次握手，意思就是建立连接的时候客户端与服务器之间需要三次数据包的交流。
-ACK：确认序号标志，为1时表示确认号有效，为0表示报文中不含确认信息，忽略确认号字段。
-SYN：同步序号，用于建立连接过程
+  <meta name="description" content="UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。
 
-客户端发送给服务器一个请求连接数据包，即发送了一个指向服务器目标端口的一个 SYN 位为 1 的TCP 报文。
-服务器接收到客户端的连接请求之后，会回应一个 SYN 位为 1 的TCP 报文，表示同意连接。并且，会把 ACK 位也置 1 表示确认收到上次消息。
-客户端接收到服务器的同意连接的数据包之后，还要回复一个 ACK 为 1 的 TCP 报文，表示确认收到。
-
-
-TCP四次挥手断开连接TCP 的四次挥手，意思就是释放连接的时候客户端与服务器之间需要四次数据包的交流。"> 
+UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。
+UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。
+UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="【面试】TCP通信原理"/>
+  <meta property="og:title" content="【面试】UDP通信原理"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -124,7 +118,7 @@ TCP四次挥手断开连接TCP 的四次挥手，意思就是释放连接的时�
 
 	
 		<div class="page-header">
-			<h1> 【面试】TCP通信原理</h1>
+			<h1> 【面试】UDP通信原理</h1>
 		</div>
 	
 
@@ -141,25 +135,12 @@ TCP四次挥手断开连接TCP 的四次挥手，意思就是释放连接的时�
 	<div class="mypage">		
 	  		
 
-	  <p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205345077.png" alt="image-20250317205345021"></p>
-<p>TCP：TCP 是一种面向连接的协议，它提供可靠的、有序的、基于字节流的通信服务。TCP 通过三次握手建立连接，通过四次挥手关闭连接。（传输层，提供端到端的通信服务。）</p>
-<h2 id="TCP三次握手校验"><a href="#TCP三次握手校验" class="headerlink" title="TCP三次握手校验"></a>TCP三次握手校验</h2><p>TCP 的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=10518772&content_type=Article&match_order=1&q=%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B&zhida_source=entity">三次握手</a>，意思就是建立连接的时候客户端与服务器之间需要三次数据包的交流。</p>
-<p>ACK：确认序号标志，为1时表示确认号有效，为0表示报文中不含确认信息，忽略确认号字段。</p>
-<p>SYN：同步序号，用于建立连接过程</p>
-<ol>
-<li>客户端发送给服务器一个请求连接数据包，即发送了一个指向服务器目标端口的一个 SYN 位为 1 的TCP 报文。</li>
-<li>服务器接收到客户端的连接请求之后，会回应一个 SYN 位为 1 的TCP 报文，表示同意连接。并且，会把 ACK 位也置 1 表示确认收到上次消息。</li>
-<li>客户端接收到服务器的同意连接的数据包之后，还要回复一个 ACK 为 1 的 TCP 报文，表示确认收到。</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205351274.png" alt="image-20250317205351223"></p>
-<h2 id="TCP四次挥手断开连接"><a href="#TCP四次挥手断开连接" class="headerlink" title="TCP四次挥手断开连接"></a>TCP四次挥手断开连接</h2><p>TCP 的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=10518772&content_type=Article&match_order=1&q=%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B&zhida_source=entity">四次挥手</a>，意思就是释放连接的时候客户端与服务器之间需要四次数据包的交流。</p>
-<ol>
-<li>客户端发送给服务器一个请求释放连接的数据包，即发送了一个指向服务器目标端口的一个 FIN 位为 1 的TCP 报文，表示客户端没有数据要发送了，但是仍然可以接收数据；并且 ACK 位也为 1，表示对上次传输数据结果的确认。并且之后处去等待状态，等待服务器的两次回应。</li>
-<li>服务器接收到客户端的释放连接请求之后，会先回应一个 ACK 位为 1 的报文，表示确认收到。但是，这时服务器可能还有数据没有发送完成，继续发送数据。</li>
-<li>服务器发送完数据之后，发送一个 FIN 为 1 的 TCP 报文，表示我也没有要发送的数据了，你可以释放连接了。当然 ACK 位仍然为 1 。</li>
-<li>客户端接收到服务器的同意释放连接的数据包之后，回复一个 ACK 为 1 的 TCP 报文，表示确认收到。</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205357557.png" alt="image-20250317205357506"></p>
+	  <p>UDP  属于传输层协议。UDP 协议的主要作用是将数据压缩成数据包的形式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205548870.png" alt="image-20250317205548833"></p>
+<p>UDP 是一种无连接的协议，它提供简单的、不可靠的通信服务。</p>
+<p>UDP 协议的通信较 TCP 简单了很多，减少了 TCP 的握手、确认、窗口、重传、拥塞控制等机制，UDP 是一个无状态的传输协议。</p>
+<p>UDP 客户端在发送数据时并不判断主机是否可达，服务器是否开启等问题，同样它不能确定数据是否成功送达服务器。它只是将数据简单的封了一个包，之后就丢出去了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205553227.png" alt="image-20250317205553148"></p>
 
 	  <div class="article-footer-copyright">
 
@@ -177,13 +158,12 @@ TCP四次挥手断开连接TCP 的四次挥手，意思就是释放连接的时�
 
     
     
-    <a href="/2025/03/17/【面试】UDP通信原理/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2025/03/15/AWD-Pwn脚本汇总/" type="button" class="btn btn-default ">Next<i
+    <a href="/2025/03/17/【面试】TCP通信原理/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
