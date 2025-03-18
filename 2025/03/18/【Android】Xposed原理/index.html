@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>【Android】Xposed原理 | WMBa0</title>
+  <meta name="author" content="WMBa0 &#39;s">
+  
+  <meta name="description" content="1、Xposed原理介绍Xposed 框架是一个运行在 Android 操作系统之上的钩子框架，是以模块扩展方式来实现对系统部分功能的修改。
+
+app_process
+Xposed 框架 Native 部分，用于替换原生 app_process，并为 XposedBridge 提供 JNI 方法。
+XposedBridgeXposed 框架 Java 部分，编译后会生成一个 jar 包，Xposed 框架的 app_process 会将此加入到系统 class path 中。
+android_artXposed 框架定制的 Android ART
+XposedInstallerXposed 框架插件管理 App
+XposedTools用于编译项目的工具集
+
+Android 系统是基于 Linux 的，其第一个由内核启动的用户进程是 init 进程。init 进程随后会创建 zygote 进程，Android 应用程序进程都是由 zygote 进程孵化而来。zygote 所对应的可执行程序是 app_process，xposed 框架通过替换系统的 app_process 可执行文件以及虚拟机动态链接库，让 zygote 在启动应用程序进程时注入框架代码，进而实现对应用程序进程的劫持。
+Xposed框架通过替换**&amp;#x2F;system&amp;#x2F;bin&amp;#x2F;app_process**程序来控制Zygote进程
+在核心功能启动后，Xposed框架会通过HookZygoteInit类的handleLoadPackage方法，来判断当前进程是否是需要hook的应用程序进程。
+如果当前进程需要hook，Xposed框架会开始进行hook操作。在hook操作中，Xposed框架会将Java层函数的指针替换为对应的native函数的指针，并将这些native函数注册为本地JNI方法。
+Xposed框架会将Java层函数转换为native函数，并将这些native函数的指针保存在XposedBridge类的sHookedMethodCallbacks静态变量中。
+Xposed框架会通过JNI的RegisterNatives方法，将这些native函数注册为本地JNI方法。
+当应用程序调用被hook的Java层函数时，实际上会调用对应的native函数，从而实现hook操作。"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="【Android】Xposed原理"/>
+  <meta property="og:site_name" content="WMBa0"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="WMBa0" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">WMBa0</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/friend" title="All the friend.">
+			  <i class=""></i>Friend
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/archives" title="archives.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 【Android】Xposed原理</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="1、Xposed原理介绍"><a href="#1、Xposed原理介绍" class="headerlink" title="1、Xposed原理介绍"></a>1、Xposed原理介绍</h1><p>Xposed 框架是一个运行在 Android 操作系统之上的钩子框架，是以模块扩展方式来实现对系统部分功能的修改。</p>
+<blockquote>
+<p>app_process</p>
+<p>Xposed 框架 Native 部分，用于替换原生 app_process，并为 XposedBridge 提供 JNI 方法。</p>
+<p>XposedBridge<br>Xposed 框架 Java 部分，编译后会生成一个 jar 包，Xposed 框架的 app_process 会将此加入到系统 class path 中。</p>
+<p>android_art<br>Xposed 框架定制的 Android ART</p>
+<p>XposedInstaller<br>Xposed 框架插件管理 App</p>
+<p>XposedTools<br>用于编译项目的工具集</p>
+</blockquote>
+<p>Android 系统是基于 Linux 的，其第一个由内核启动的用户进程是 <strong>init</strong> 进程。init 进程随后会创建 zygote 进程，Android 应用程序进程都是由 zygote 进程孵化而来。zygote 所对应的可执行程序是 <strong>app_process</strong>，xposed 框架通过替换系统的 app_process 可执行文件以及虚拟机动态链接库，让 zygote 在启动应用程序进程时注入框架代码，进而实现对应用程序进程的劫持。</p>
+<p>Xposed框架通过替换**&#x2F;system&#x2F;bin&#x2F;app_process**程序来控制Zygote进程</p>
+<p>在核心功能启动后，Xposed框架会通过HookZygoteInit类的handleLoadPackage方法，来判断当前进程是否是需要hook的应用程序进程。</p>
+<p>如果当前进程需要hook，Xposed框架会开始进行hook操作。在hook操作中，Xposed框架会将Java层函数的指针替换为对应的native函数的指针，并将这些native函数注册为本地JNI方法。</p>
+<p>Xposed框架会将Java层函数转换为native函数，并将这些native函数的指针保存在XposedBridge类的sHookedMethodCallbacks静态变量中。</p>
+<p>Xposed框架会通过JNI的RegisterNatives方法，将这些native函数注册为本地JNI方法。</p>
+<p>当应用程序调用被hook的Java层函数时，实际上会调用对应的native函数，从而实现hook操作。</p>
+<h1 id="2、代码解析"><a href="#2、代码解析" class="headerlink" title="2、代码解析"></a>2、代码解析</h1><p>xposed 的 app_main2.cpp中做了xposed的初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Initialize Xposed (unless it is disabled). */</span></span><br><span class="line">bool <span class="title function_">initialize</span><span class="params">(bool zygote, bool startSystemServer, const <span class="type">char</span>* className, <span class="type">int</span> argc, <span class="type">char</span>* const argv[])</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 参数接管</span></span><br><span class="line">    xposed-&gt;zygote = zygote;</span><br><span class="line">    xposed-&gt;startSystemServer = startSystemServer;</span><br><span class="line">    xposed-&gt;startClassName = className;</span><br><span class="line">    xposed-&gt;xposedVersionInt = xposedVersionInt;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// XposedBridge.jar 加载到 ClassPath 中</span></span><br><span class="line">    <span class="keyword">return</span> addJarToClasspath();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Zygote进程，使其在启动过程中加载XposedBridge.jar。XposedBridge.jar包中包含了Xposed框架的核心代码</p>
+<p>XposedBridge.jar中的 XposedBridge 类的 main 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="comment">// Initialize the Xposed framework and modules</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!hadInitErrors()) &#123;</span><br><span class="line">            initXResources();</span><br><span class="line"> </span><br><span class="line">            SELinuxHelper.initOnce();</span><br><span class="line">            SELinuxHelper.initForProcess(<span class="literal">null</span>);</span><br><span class="line"> </span><br><span class="line">            runtime = getRuntime();</span><br><span class="line">            XPOSED_BRIDGE_VERSION = getXposedVersion();</span><br><span class="line"> </span><br><span class="line">            <span class="comment">// Xposed初始化</span></span><br><span class="line">            <span class="keyword">if</span> (isZygote) &#123;</span><br><span class="line">                XposedInit.hookResources();</span><br><span class="line">                XposedInit.initForZygote();</span><br><span class="line">            &#125;</span><br><span class="line"> 			<span class="comment">// 加载 Xposed 模块</span></span><br><span class="line">            XposedInit.loadModules(); </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.e(TAG, <span class="string">&quot;Not initializing Xposed because of previous errors&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">        Log.e(TAG, <span class="string">&quot;Errors during Xposed initialization&quot;</span>, t);</span><br><span class="line">        disableHooks = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Call the original startup code  =&gt; 原始执行链</span></span><br><span class="line">    <span class="keyword">if</span> (isZygote) &#123;</span><br><span class="line">        ZygoteInit.main(args);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        RuntimeInit.main(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="3、Xposed检测"><a href="#3、Xposed检测" class="headerlink" title="3、Xposed检测"></a>3、Xposed检测</h1><ol>
+<li>检查内存中是否有XposedBridge.jar</li>
+<li>检查是否有xposed-installer 这个apk</li>
+<li>反射调用xposed的一些核心类，如果可以反射找到，说明注入了XposedBridge.jar</li>
+</ol>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2025/03/18/【Android】JustTrustMe原理/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2025-03-18 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Android/">Android<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2025 WMBa0 &#39;s Blog
+  
+      powered by <a href="https://github.com/WMBa0" target="_blank">WMBa0 Github</a>
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
