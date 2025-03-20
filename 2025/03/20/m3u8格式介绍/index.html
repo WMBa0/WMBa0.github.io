@@ -6,20 +6,22 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>【面试】HTTPS通信原理 | WMBa0</title>
+  <title>m3u8格式介绍 | WMBa0</title>
   <meta name="author" content="WMBa0 &#39;s">
   
-  <meta name="description" content="HTTPS（HyperText Transfer Protocol Secure）是HTTP协议的安全版本，它通过结合使用TLS（Transport Layer Security）协议来加密HTTP通信。
+  <meta name="description" content="M3U8文件是指UTF-8编码格式的M3U文件。
+M3U文件是记录了一个索引纯文本文件，打开它时播放软件并不是播放它，而是根据它的索引找到对应的音视频文件的网络地址进行在线播放。
+这个是为了在线播放流视频诞生的，而这种视频最大的特点就是把原来的视频进行切片，所谓切片就是把一个完整的视频比如.mp4格式的切成多段.ts格式视频，然后生成一个对应切片片段视频的索引文件，这个索引文件就是m3u8。
 
-用户和网站通信的过程
+看到这个文件其实就是个索引文件，当然ts切片视频文件和m3u8文件放在同一目录下
+.ts也是一种视频格式，其实是可以直接观看的，但是都是一段一段的，如何把这些一段一段视频合成一个完整的mp4就需要依靠m3u8这个视频索引文件了（ffmpeg工具）
 
-TLS四次握手
-结合（SSH认证原理）"> 
+这张流程图大致的解释了现在视频网站的工作原理，后台利用工具进行视频切片，然后用户使用设备点播流视频，一边播放一边下载下一个视频切片非常方便。"> 
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="【面试】HTTPS通信原理"/>
+  <meta property="og:title" content="m3u8格式介绍"/>
   <meta property="og:site_name" content="WMBa0"/>
 
   
@@ -119,7 +121,7 @@ TLS四次握手
 
 	
 		<div class="page-header">
-			<h1> 【面试】HTTPS通信原理</h1>
+			<h1> m3u8格式介绍</h1>
 		</div>
 	
 
@@ -136,12 +138,14 @@ TLS四次握手
 	<div class="mypage">		
 	  		
 
-	  <p>HTTPS（HyperText Transfer Protocol Secure）是HTTP协议的安全版本，它通过结合使用TLS（Transport Layer Security）协议来加密HTTP通信。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205654524.png" alt="image-20250317205654419"></p>
-<h2 id="用户和网站通信的过程"><a href="#用户和网站通信的过程" class="headerlink" title="用户和网站通信的过程"></a>用户和网站通信的过程</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205700130.png" alt="image-20250317205700022"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205705364.png" alt="image-20250317205705219"></p>
-<h2 id="TLS四次握手"><a href="#TLS四次握手" class="headerlink" title="TLS四次握手"></a>TLS四次握手</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250317205711644.png" alt="image-20250317205711504"></p>
-<p>结合（SSH认证原理）</p>
+	  <p>M3U8文件是指UTF-8编码格式的M3U文件。</p>
+<p>M3U文件是记录了一个索引纯文本文件，打开它时播放软件并不是播放它，而是根据它的索引找到对应的音视频文件的网络地址进行在线播放。</p>
+<p>这个是为了在线播放流视频诞生的，而这种视频最大的特点就是把原来的视频进行切片，所谓切片就是把一个完整的视频比如.mp4格式的切成多段.ts格式视频，然后生成一个对应切片片段视频的索引文件，这个索引文件就是m3u8。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250320163123706.png" alt="image-20250320163123553"></p>
+<p>看到这个文件其实就是个索引文件，当然ts切片视频文件和m3u8文件放在同一目录下</p>
+<p>.ts也是一种视频格式，其实是可以直接观看的，但是都是一段一段的，如何把这些一段一段视频合成一个完整的mp4就需要依靠m3u8这个视频索引文件了（ffmpeg工具）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250320163154318.png" alt="image-20250320163154238"></p>
+<p>这张流程图大致的解释了现在视频网站的工作原理，后台利用工具进行视频切片，然后用户使用设备点播流视频，一边播放一边下载下一个视频切片非常方便。</p>
 
 	  <div class="article-footer-copyright">
 
@@ -159,13 +163,12 @@ TLS四次握手
 
     
     
-    <a href="/2025/03/17/【面试】进程、线程、协程/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2025/03/17/【面试】UDP通信原理/" type="button" class="btn btn-default ">Next<i
+    <a href="/2025/03/19/2023-2024大二总结/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -199,7 +202,7 @@ TLS四次握手
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2025-03-17 
+	2025-03-20 
 	</div>
 	
 
