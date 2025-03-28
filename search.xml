@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>Frida 三大工具原理和应用</title>
+      <link href="/2025/03/28/Frida-%E4%B8%89%E5%A4%A7%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86%E5%92%8C%E5%BA%94%E7%94%A8/"/>
+      <url>/2025/03/28/Frida-%E4%B8%89%E5%A4%A7%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86%E5%92%8C%E5%BA%94%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h2 id="frida-server"><a href="#frida-server" class="headerlink" title="frida-server"></a>frida-server</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191117520.png" alt="image-20250328191117373"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191004283.png" alt="image-20250328191004227"></p><h2 id="frida-gadget-so"><a href="#frida-gadget-so" class="headerlink" title="frida-gadget.so"></a>frida-gadget.so</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191136892.png" alt="image-20250328191136744"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191143759.png" alt="image-20250328191143707"></p><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191148414.png" alt="image-20250328191148336"></p><h2 id="frida-inject"><a href="#frida-inject" class="headerlink" title="frida-inject"></a>frida-inject</h2><p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191213547.png" alt="image-20250328191213479"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【一面】美团面试-安全岗</title>
+      <link href="/2025/03/25/%E3%80%90%E4%B8%80%E9%9D%A2%E3%80%91%E7%BE%8E%E5%9B%A2%E9%9D%A2%E8%AF%95-%E5%AE%89%E5%85%A8%E5%B2%97/"/>
+      <url>/2025/03/25/%E3%80%90%E4%B8%80%E9%9D%A2%E3%80%91%E7%BE%8E%E5%9B%A2%E9%9D%A2%E8%AF%95-%E5%AE%89%E5%85%A8%E5%B2%97/</url>
+      
+        <content type="html"><![CDATA[<p>360 VMP 怎么分析？</p><p>Android Intent 重定向漏洞具体分析</p><p>so层自实现完整双向证书校验绕过？</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>shell命令的攻防应用</title>
       <link href="/2025/03/20/shell%E5%91%BD%E4%BB%A4/"/>
       <url>/2025/03/20/shell%E5%91%BD%E4%BB%A4/</url>
