@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>【基础】SVC指令 | WMBa0</title>
+  <meta name="author" content="WMBa0 &#39;s">
+  
+  <meta name="description" content="SVC 是ARM 架构中用于触发系统调用的指令。它类似于传统的 syscall 指令，主要用于在用户空间（user mode）和内核空间（kernel mode）之间进行上下文切换 作用：SVC 指令允许用户态程序请求操作系统提供的特权服务，通常是在用户程序需要执行特权操作（例如文件操作、内存分配等）时使用。执行流程：当执行 SVC 指令时，处理器会从用户模式切换到内核模式，操作系统会根据传入的参数和服务号决定执行哪个系统调用。执行完系统调用后，操作系统会返回并将控制权交还给用户程序。而在linux系统里面内存又分为内核态和用户态
+SVC与中断
+SVC 中断：当 SVC 指令被执行时，CPU 会触发一个中断，切换到内核模式，处理操作系统的服务请求。SVC 会提供一个中断号作为参数，这个参数通常用于指定要执行的系统调用编号（比如打开文件、创建进程等）。
+
+返回机制：操作系统会执行完相应的服务后，将控制权返回给用户程序。在返回时，CPU 会恢复到用户模式。
+Syscall（系统调用）Syscall（System Call）是用户程序请求操作系统提供服务的一种机制。它是用户空间与内核空间之间的接口。用户程序不能直接访问内核资源，所以需要通过系统调用来向内核请求访问资源、执行特权操作等。
+作用：当用户程序需要执行特权操作时（例如访问硬件资源、修改内存保护、创建&amp;#x2F;删除文件等），它会发起一个系统调用。系统调用通常会由操作系统内核提供一组API来实现。
+工作原理：
+用户程序通过某种方式（比如调用一个库函数）发起系统调用。
+操作系统通过一个受保护的机制（比如通过软件中断或特殊的指令）来进行切换，将执行权从用户空间转移到内核空间。
+操作系统完成特定的操作后，返回执行结果并切换回用户空间。
+
+
+
+
+
+Syscall函数里面的实现实际上就是一段汇编，这里面便是调用了svc这段指令。
+
+它无法被inlinehook Hook，所以会极大的提高安全程度。（update：搜到 svc 指令地址，仍然可以 inlinehook）
+12345678910111213BTI cMOV X8, X0MOV X0, X1MOV X1, X2MOV X2, X3MOV X3, X4MOV X4, X5MOV X5, X6SVC 0CMN X0, #1,LSL#12CNEG X0, X0, HIB.HI __set_errno_internalRET"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="【基础】SVC指令"/>
+  <meta property="og:site_name" content="WMBa0"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="WMBa0" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">WMBa0</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/friend" title="All the friend.">
+			  <i class=""></i>Friend
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/archives" title="archives.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 【基础】SVC指令</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>SVC 是ARM 架构中用于触发系统调用的指令。它类似于传统的 syscall 指令，主要用于在用户空间（user mode）和内核空间（kernel mode）之间进行上下文切换<br> 作用：SVC 指令允许用户态程序请求操作系统提供的特权服务，通常是在用户程序需要执行特权操作（例如文件操作、内存分配等）时使用。执行流程：当执行 SVC 指令时，处理器会从用户模式切换到内核模式，操作系统会根据传入的参数和服务号决定执行哪个系统调用。执行完系统调用后，操作系统会返回并将控制权交还给用户程序。而在linux系统里面内存又分为内核态和用户态</p>
+<p>SVC与中断</p>
+<p>SVC 中断：当 SVC 指令被执行时，CPU 会触发一个中断，切换到内核模式，处理操作系统的服务请求。SVC 会提供一个中断号作为参数，这个参数通常用于指定要执行的系统调用编号（比如打开文件、创建进程等）。</p>
+<ul>
+<li>返回机制：操作系统会执行完相应的服务后，将控制权返回给用户程序。在返回时，CPU 会恢复到用户模式。</li>
+<li>Syscall（系统调用）Syscall（System Call）是用户程序请求操作系统提供服务的一种机制。它是用户空间与内核空间之间的接口。用户程序不能直接访问内核资源，所以需要通过系统调用来向内核请求访问资源、执行特权操作等。<ul>
+<li>作用：当用户程序需要执行特权操作时（例如访问硬件资源、修改内存保护、创建&#x2F;删除文件等），它会发起一个系统调用。系统调用通常会由操作系统内核提供一组API来实现。</li>
+<li>工作原理：<ul>
+<li>用户程序通过某种方式（比如调用一个库函数）发起系统调用。</li>
+<li>操作系统通过一个受保护的机制（比如通过软件中断或特殊的指令）来进行切换，将执行权从用户空间转移到内核空间。</li>
+<li>操作系统完成特定的操作后，返回执行结果并切换回用户空间。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Syscall函数里面的实现实际上就是一段汇编，这里面便是调用了svc这段指令。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/WMBa0/hexo_img@main/img/20250328191344098.png" alt="image-20250328191344036"></p>
+<p>它无法被inlinehook Hook，所以会极大的提高安全程度。（update：搜到 svc 指令地址，仍然可以 inlinehook）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">BTI c</span><br><span class="line">MOV X8, X0</span><br><span class="line">MOV X0, X1</span><br><span class="line">MOV X1, X2</span><br><span class="line">MOV X2, X3</span><br><span class="line">MOV X3, X4</span><br><span class="line">MOV X4, X5</span><br><span class="line">MOV X5, X6</span><br><span class="line">SVC <span class="number">0</span></span><br><span class="line">CMN X0, <span class="comment">#1,LSL#12</span></span><br><span class="line">CNEG X0, X0, HI</span><br><span class="line">B.HI __set_errno_internal</span><br><span class="line">RET</span><br></pre></td></tr></table></figure>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2025/03/28/Frida-三大工具原理和应用/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2025-03-28 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Android/">Android<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2025 WMBa0 &#39;s Blog
+  
+      powered by <a href="https://github.com/WMBa0" target="_blank">WMBa0 Github</a>
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
